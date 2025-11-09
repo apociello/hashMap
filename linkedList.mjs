@@ -83,7 +83,20 @@ class LinkedList {
         return removed;
     }
 
+    
     contains(value) {
+        if (this.head == null) return false;
+        let current = this.head;
+        while(current != null) {
+            const key = current.value.split(':')[0];
+            if(key == value) return true;
+            current = current.next;
+        }
+
+        return false;
+    }
+
+    get(value) {
         if (this.head == null) return false;
         let current = this.head;
         while(current != null) {

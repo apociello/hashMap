@@ -71,7 +71,7 @@ class HashMap {
     get(key) {
         for (const linkedList of this.array) {
             if (linkedList) {
-                const result = linkedList.contains(key);
+                const result = linkedList.get(key);
                 if (result != null) {
                     return result;
                 }
@@ -79,6 +79,17 @@ class HashMap {
         }
 
         return null;
+    }
+
+    has(key) {
+        for (const linkedList of this.array) {
+            if (linkedList) {
+                const hasKey = linkedList.contains(key);
+                if (hasKey) return true;
+            }
+        }
+
+        return false;
     }
 }
 
@@ -97,4 +108,3 @@ hashy.set('grade', 'A');
 //hashy.set('Actor', 'Paul Walker');
 
 console.log(hashy);
-
