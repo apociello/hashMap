@@ -33,19 +33,54 @@ class HashMap {
             }
         })
 
+        for (const savedKey of this.keyCollector) {
+            if (savedKey == key) {
+                let linkedList = this.array[hashCode];
+                const index = linkedList.find(key);
+                linkedList.removeAt(index);
+                linkedList.append(`${key}:${value}`);
+                return;
+            }
+        }
+
         if(this.array[hashCode]) {
             let linkedList = this.array[hashCode];
             linkedList.append(`${key}:${value}`);
+
+            this.capacityCounter++;
+            this.keyCollector.push(key);
+            if (this.capacityCounter / this.capacity >= this.loadFactor) {
+                console.log('over capacity')
+            }
+            
             return;
         } else {
             this.array[hashCode] = new LinkedList();
             this.array[hashCode].append(`${key}:${value}`);
+
+            this.keyCollector.push(key);
+            this.capacityCounter++;
+            if (this.capacityCounter / this.capacity >= this.loadFactor) {
+                console.log('over capacity')
+            }
         }
 
 
     }
 }
 
-
 const hashy = new HashMap();
-console.log(hashy.hash('Hello'));
+hashy.set('fruit', 'apple');
+hashy.set('car', 'toyota');
+hashy.set('city', 'tokyo');
+hashy.set('weather', 'sunny');
+hashy.set('mood', 'happy');
+hashy.set('cat', 'ron');
+hashy.set('dog', 'toby');
+hashy.set('singer', 'dylan');
+hashy.set('boxer', 'tyson');
+hashy.set('color', 'blue');
+hashy.set('grade', 'A');
+//hashy.set('Actor', 'Paul Walker');
+
+console.log(hashy);
