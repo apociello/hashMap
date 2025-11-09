@@ -87,11 +87,12 @@ class LinkedList {
         if (this.head == null) return false;
         let current = this.head;
         while(current != null) {
-            if(current.value == value) return true;
+            const [key, storedValue] = current.value.split(':');
+            if(key === value) return storedValue;
             current = current.next;
         }
 
-        return false;
+        return null;
     }
 
     find(value) {
