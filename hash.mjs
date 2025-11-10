@@ -23,16 +23,6 @@ class HashMap {
     set(key, value) {
         const hashCode = this.hash(key);
 
-        this.keyCollector.forEach((savedKey) => {
-            if (key == savedKey) {
-                let linkedList = this.array[hashCode];
-                const index = linkedList.find(key);
-                linkedList.removeAt(index);
-                linkedList.append(`${key}:${value}`);
-                return;
-            }
-        })
-
         for (const savedKey of this.keyCollector) {
             if (savedKey == key) {
                 let linkedList = this.array[hashCode];
@@ -43,12 +33,14 @@ class HashMap {
             }
         }
 
+        // Collision
         if(this.array[hashCode]) {
             let linkedList = this.array[hashCode];
             linkedList.append(`${key}:${value}`);
 
             this.capacityCounter++;
             this.keyCollector.push(key);
+
             if (this.capacityCounter / this.capacity >= this.loadFactor) {
                 console.log('over capacity')
             }
@@ -91,6 +83,40 @@ class HashMap {
 
         return false;
     }
+
+    remove(key) {
+        for (const linkedList of this.array) {
+            if (linkedList) {
+                const index = linkedList.find(key)
+                if (index != null) {
+                    linkedList.removeAt(index); 
+                    this.keyCollector.splice(this.keyCollector.indexOf(key), 1);
+                    this.capacityCounter--;
+                    return true;
+                }
+            }
+            
+        }
+
+        return false;
+    }
+
+    length() {
+        return this.keyCollector.length;
+    }
+
+    clear() {
+        this.array = [];
+        this.loadFactor = 0.75;
+        this.capacity = 16;
+        this.capacityCounter = 0;
+        this.keyCollector = []
+    }
+
+    keys() {
+        return this.keyCollector;
+    }
+
 }
 
 const hashy = new HashMap();
@@ -105,6 +131,5 @@ hashy.set('singer', 'dylan');
 hashy.set('boxer', 'tyson');
 hashy.set('color', 'blue');
 hashy.set('grade', 'A');
-//hashy.set('Actor', 'Paul Walker');
 
 console.log(hashy);
