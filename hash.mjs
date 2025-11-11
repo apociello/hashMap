@@ -14,7 +14,7 @@ class HashMap {
 
         const primeNumber = 31;
         for (let i = 0; i < key.length; i++) {
-            hashCode = (primeNumber * hashCode + key.charCodeAt(i)) % 16;
+            hashCode = (primeNumber * hashCode + key.charCodeAt(i)) % this.capacity;
         }
 
         return hashCode;
@@ -41,8 +41,9 @@ class HashMap {
             this.capacityCounter++;
             this.keyCollector.push(key);
 
-            if (this.capacityCounter / this.capacity >= this.loadFactor) {
-                console.log('over capacity')
+            if (this.capacityCounter / this.capacity > this.loadFactor) {
+                console.log('over capacity -> grow buckets')
+                this.growBuckets();
             }
             
             return;
@@ -52,11 +53,29 @@ class HashMap {
 
             this.keyCollector.push(key);
             this.capacityCounter++;
-            if (this.capacityCounter / this.capacity >= this.loadFactor) {
-                console.log('over capacity')
+            if (this.capacityCounter / this.capacity > this.loadFactor) {
+                console.log('over capacity -> grow buckets')
+                this.growBuckets();
             }
         }
 
+
+    }
+
+    growBuckets(){
+        this.capacity = this.capacity * 2;
+        const entries = this.entries();
+        const keyCopies = this.keyCollector;
+        this.array = [];
+        this.keyCollector = [];
+        this.capacityCounter = 0;
+        
+        for (const entry of entries) {
+            const [key, value] = entry;
+            this.set(key, value);
+        }
+
+        return this.array;
 
     }
 
@@ -142,18 +161,22 @@ class HashMap {
 
 }
 
-const hashy = new HashMap();
-hashy.set('fruit', 'apple');
-hashy.set('car', 'toyota');
-hashy.set('city', 'tokyo');
-hashy.set('weather', 'sunny');
-hashy.set('mood', 'happy');
-hashy.set('cat', 'ron');
-hashy.set('dog', 'toby');
-hashy.set('singer', 'dylan');
-hashy.set('boxer', 'tyson');
-hashy.set('color', 'blue');
-hashy.set('grade', 'A');
 
-// console.log(hashy.values());
-console.log(hashy.entries());
+const test = new HashMap()
+
+test.set('apple', 'red')
+test.set('banana', 'yellow')
+test.set('carrot', 'orange')
+test.set('dog', 'brown')
+test.set('elephant', 'gray')
+test.set('frog', 'green')
+test.set('grape', 'purple')
+test.set('hat', 'black')
+test.set('ice cream', 'white')
+test.set('jacket', 'blue')
+test.set('kite', 'pink')
+test.set('lion', 'golden')
+
+test.set('moon', 'silver')
+
+console.log(test.entries())
