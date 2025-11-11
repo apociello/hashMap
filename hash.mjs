@@ -127,6 +127,19 @@ class HashMap {
         return array;
     }
 
+    entries() {
+        let entryArray = [];
+        for (const key of this.keyCollector) {
+            let entry = [];
+            const value = this.get(key);
+
+            entry.push(key, value);
+            entryArray.push(entry);
+        }
+
+        return entryArray;
+    }
+
 }
 
 const hashy = new HashMap();
@@ -142,4 +155,5 @@ hashy.set('boxer', 'tyson');
 hashy.set('color', 'blue');
 hashy.set('grade', 'A');
 
-console.log(hashy.values());
+// console.log(hashy.values());
+console.log(hashy.entries());
