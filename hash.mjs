@@ -22,44 +22,34 @@ class HashMap {
 
     set(key, value) {
         const hashCode = this.hash(key);
+        let linkedList = this.array[hashCode];
 
-        for (const savedKey of this.keyCollector) {
-            if (savedKey == key) {
-                let linkedList = this.array[hashCode];
+        if (linkedList) {
+            if(linkedList.contains(key)) {
                 const index = linkedList.find(key);
                 linkedList.removeAt(index);
                 linkedList.append(`${key}:${value}`);
-                return;
+                return
+            } else {
+                // Collision
+                linkedList.append(`${key}:${value}`);
+                this.capacityCounter++;
+
+                if (this.capacityCounter / this.capacity > this.loadFactor) {
+                    console.log('over capacity -> grow buckets')
+                    this.growBuckets();
+                }
             }
-        }
-
-        // Collision
-        if(this.array[hashCode]) {
-            let linkedList = this.array[hashCode];
-            linkedList.append(`${key}:${value}`);
-
-            this.capacityCounter++;
-            this.keyCollector.push(key);
-
-            if (this.capacityCounter / this.capacity > this.loadFactor) {
-                console.log('over capacity -> grow buckets')
-                this.growBuckets();
-            }
-            
-            return;
         } else {
             this.array[hashCode] = new LinkedList();
             this.array[hashCode].append(`${key}:${value}`);
-
-            this.keyCollector.push(key);
             this.capacityCounter++;
+
             if (this.capacityCounter / this.capacity > this.loadFactor) {
                 console.log('over capacity -> grow buckets')
                 this.growBuckets();
             }
         }
-
-
     }
 
     growBuckets(){
@@ -177,6 +167,6 @@ test.set('jacket', 'blue')
 test.set('kite', 'pink')
 test.set('lion', 'golden')
 
-test.set('moon', 'silver')
-
-console.log(test.entries())
+console.log(test.array);
+test.set('carrot', 'green');
+console.log(test.array);
