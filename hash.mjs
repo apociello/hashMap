@@ -55,9 +55,7 @@ class HashMap {
     growBuckets(){
         this.capacity = this.capacity * 2;
         const entries = this.entries();
-        const keyCopies = this.keyCollector;
         this.array = [];
-        this.keyCollector = [];
         this.capacityCounter = 0;
         
         for (const entry of entries) {
@@ -99,7 +97,6 @@ class HashMap {
                 const index = linkedList.find(key)
                 if (index != null) {
                     linkedList.removeAt(index); 
-                    this.keyCollector.splice(this.keyCollector.indexOf(key), 1);
                     this.capacityCounter--;
                     return true;
                 }
