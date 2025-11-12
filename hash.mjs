@@ -6,7 +6,6 @@ class HashMap {
         this.capacity = capacity;
         this.capacityCounter = 0;
         this.array = [];
-        this.keyCollector = [];
     }
 
     hash(key) {
@@ -70,7 +69,7 @@ class HashMap {
     get(key) {
         for (const linkedList of this.array) {
             if (linkedList) {
-                const result = linkedList.get(key);
+                const result = linkedList.getValue(key);
                 if (result != null) {
                     return result;
                 }
@@ -108,7 +107,7 @@ class HashMap {
     }
 
     length() {
-        return this.keyCollector.length;
+        return this.capacityCounter;
     }
 
     clear() {
@@ -116,31 +115,34 @@ class HashMap {
         this.loadFactor = 0.75;
         this.capacity = 16;
         this.capacityCounter = 0;
-        this.keyCollector = []
     }
 
     keys() {
-        return this.keyCollector;
+        let keys = [];
+        for (const linkedList of this.array) {
+            if (!linkedList) continue;
+            const keyArray = linkedList.getKeys();
+            if (keyArray) keys.push(...keyArray);
+        }
+        return keys;
     }
 
     values() {
-        let array = [];
-
-        for (const key of this.keyCollector) {
-            array.push(this.get(key));
+        let values = [];
+        for (const linkedList of this.array) {
+            if (!linkedList) continue;
+            const valueArray = linkedList.getValues();
+            if (valueArray) values.push(...valueArray);
         }
-
-        return array;
+        return values;
     }
 
     entries() {
         let entryArray = [];
-        for (const key of this.keyCollector) {
-            let entry = [];
-            const value = this.get(key);
-
-            entry.push(key, value);
-            entryArray.push(entry);
+        for (const linkedList of this.array) {
+            if (!linkedList) continue;
+            const array = linkedList.getKeyValues();
+            if (array) entryArray.push(...array);
         }
 
         return entryArray;
@@ -164,6 +166,4 @@ test.set('jacket', 'blue')
 test.set('kite', 'pink')
 test.set('lion', 'golden')
 
-console.log(test.array);
-test.set('carrot', 'green');
-console.log(test.array);
+console.log(test.entries());

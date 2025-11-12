@@ -26,7 +26,7 @@ class LinkedList {
     }
 
 
-    get(value) {
+    getValue(value) {
         if (this.head == null) return null;
         let current = this.head;
         while(current != null) {
@@ -37,6 +37,48 @@ class LinkedList {
 
         return null;
     }
+
+    getKeys() {
+        if (this.head == null) return null;
+        let current = this.head;
+        let keyArray = [];
+        while(current != null) {
+            const key = current.value.split(':')[0];
+            keyArray.push(key);
+            current = current.next;
+        }
+
+        return keyArray;
+    }
+
+    getValues() {
+        if (this.head == null) return null;
+        let current = this.head;
+        let valueArray = [];
+        while(current != null) {
+            const value = current.value.split(':')[1];
+            valueArray.push(value);
+            current = current.next;
+        }
+
+        return valueArray;
+    }
+
+    getKeyValues() {
+        if (this.head == null) return null;
+        let current = this.head;
+        let array = [];
+        while(current != null) {
+            const [key, value] = current.value.split(':');
+            array.push([key, value ]);
+            current = current.next;
+        }
+
+        return array;
+    }
+
+
+   
 
     contains(value) {
         if (this.head == null) return false;
