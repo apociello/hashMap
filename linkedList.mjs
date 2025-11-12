@@ -25,7 +25,6 @@ class LinkedList {
         return this.size;
     }
 
-
     getValue(value) {
         if (this.head == null) return null;
         let current = this.head;
@@ -76,9 +75,6 @@ class LinkedList {
 
         return array;
     }
-
-
-   
 
     contains(value) {
         if (this.head == null) return false;

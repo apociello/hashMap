@@ -21,17 +21,17 @@ class HashMap {
 
     set(key, value) {
         const hashCode = this.hash(key);
-        let linkedList = this.array[hashCode];
+        let bucket = this.array[hashCode];
 
-        if (linkedList) {
-            if(linkedList.contains(key)) {
-                const index = linkedList.find(key);
-                linkedList.removeAt(index);
-                linkedList.append(`${key}:${value}`);
+        if (bucket) {
+            if(bucket.contains(key)) {
+                const index = bucket.find(key);
+                bucket.removeAt(index);
+                bucket.append(`${key}:${value}`);
                 return
             } else {
                 // Collision
-                linkedList.append(`${key}:${value}`);
+                bucket.append(`${key}:${value}`);
                 this.capacityCounter++;
 
                 if (this.capacityCounter / this.capacity > this.loadFactor) {
@@ -61,46 +61,31 @@ class HashMap {
             const [key, value] = entry;
             this.set(key, value);
         }
-
-        return this.array;
-
     }
 
     get(key) {
-        for (const linkedList of this.array) {
-            if (linkedList) {
-                const result = linkedList.getValue(key);
-                if (result != null) {
-                    return result;
-                }
-            }
-        }
-
-        return null;
+        const index = this.hash(key);
+        const bucket = this.array[index];
+        if (!bucket) return null;
+        return bucket.getValue(key);
     }
 
     has(key) {
-        for (const linkedList of this.array) {
-            if (linkedList) {
-                const hasKey = linkedList.contains(key);
-                if (hasKey) return true;
-            }
-        }
-
-        return false;
+        const index = this.hash(key);
+        const bucket = this.array[index];
+        if (!bucket) return false;
+        return bucket.contains(key);
     }
 
     remove(key) {
-        for (const linkedList of this.array) {
-            if (linkedList) {
-                const index = linkedList.find(key)
-                if (index != null) {
-                    linkedList.removeAt(index); 
-                    this.capacityCounter--;
-                    return true;
-                }
-            }
-            
+        const index = this.hash(key);
+        const bucket = this.array[index];
+        if (!bucket) return false;
+        const i = bucket.find(key);
+        if (i != null) {
+            bucket.removeAt(i); 
+            this.capacityCounter--;
+            return true;
         }
 
         return false;
