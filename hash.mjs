@@ -27,11 +27,11 @@ class HashMap {
             if(bucket.contains(key)) {
                 const index = bucket.find(key);
                 bucket.removeAt(index);
-                bucket.append(`${key}:${value}`);
+                bucket.append({key, value});
                 return
             } else {
                 // Collision
-                bucket.append(`${key}:${value}`);
+                bucket.append({key, value});
                 this.capacityCounter++;
 
                 if (this.capacityCounter / this.capacity > this.loadFactor) {
@@ -41,7 +41,7 @@ class HashMap {
             }
         } else {
             this.array[hashCode] = new LinkedList();
-            this.array[hashCode].append(`${key}:${value}`);
+            this.array[hashCode].append({key,value});
             this.capacityCounter++;
 
             if (this.capacityCounter / this.capacity > this.loadFactor) {

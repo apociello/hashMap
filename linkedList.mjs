@@ -29,7 +29,7 @@ class LinkedList {
         if (this.head == null) return null;
         let current = this.head;
         while(current != null) {
-            const [key, storedValue] = current.value.split(':');
+            const [key, storedValue] = current.value;
             if(key === value) return storedValue;
             current = current.next;
         }
@@ -42,7 +42,7 @@ class LinkedList {
         let current = this.head;
         let keyArray = [];
         while(current != null) {
-            const key = current.value.split(':')[0];
+            const key = current.value[0];
             keyArray.push(key);
             current = current.next;
         }
@@ -55,7 +55,7 @@ class LinkedList {
         let current = this.head;
         let valueArray = [];
         while(current != null) {
-            const value = current.value.split(':')[1];
+            const value = current.value[1];
             valueArray.push(value);
             current = current.next;
         }
@@ -68,7 +68,7 @@ class LinkedList {
         let current = this.head;
         let array = [];
         while(current != null) {
-            const [key, value] = current.value.split(':');
+            const [key, value] = current.value;
             array.push([key, value ]);
             current = current.next;
         }
@@ -80,7 +80,7 @@ class LinkedList {
         if (this.head == null) return false;
         let current = this.head;
         while(current != null) {
-            const key = current.value.split(':')[0];
+            const key = current.value[0];
             if(key === value) return true;
             current = current.next;
         }
@@ -93,7 +93,7 @@ class LinkedList {
         let current = this.head;
 
         while(current != null) {
-            const key = current.value.split(':')[0];
+            const key = current.value[0];
             if (key === value) return index;
             current = current.next;
             index++;
