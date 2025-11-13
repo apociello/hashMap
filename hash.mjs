@@ -4,7 +4,7 @@ class HashMap {
     constructor(loadFactor = 0.75, capacity = 16) {
         this.loadFactor = loadFactor;
         this.capacity = capacity;
-        this.capacityCounter = 0;
+        this.size = 0;
         this.array = [];
     }
 
@@ -28,26 +28,20 @@ class HashMap {
                 const index = bucket.find(key);
                 bucket.removeAt(index);
                 bucket.append({key, value});
-                return
+                return;
             } else {
                 // Collision
                 bucket.append({key, value});
-                this.capacityCounter++;
-
-                if (this.capacityCounter / this.capacity > this.loadFactor) {
-                    console.log('over capacity -> grow buckets')
-                    this.growBuckets();
-                }
             }
         } else {
             this.array[hashCode] = new LinkedList();
             this.array[hashCode].append({key,value});
-            this.capacityCounter++;
+        }
 
-            if (this.capacityCounter / this.capacity > this.loadFactor) {
-                console.log('over capacity -> grow buckets')
-                this.growBuckets();
-            }
+        this.size++;
+        if (this.size / this.capacity > this.loadFactor) {
+            console.log('over capacity -> grow buckets')
+            this.growBuckets();
         }
     }
 
@@ -55,7 +49,7 @@ class HashMap {
         this.capacity = this.capacity * 2;
         const entries = this.entries();
         this.array = [];
-        this.capacityCounter = 0;
+        this.size = 0;
         
         for (const entry of entries) {
             const [key, value] = entry;
@@ -84,7 +78,7 @@ class HashMap {
         const i = bucket.find(key);
         if (i != null) {
             bucket.removeAt(i); 
-            this.capacityCounter--;
+            this.size--;
             return true;
         }
 
@@ -92,21 +86,21 @@ class HashMap {
     }
 
     length() {
-        return this.capacityCounter;
+        return this.size;
     }
 
     clear() {
         this.array = [];
         this.loadFactor = 0.75;
         this.capacity = 16;
-        this.capacityCounter = 0;
+        this.size = 0;
     }
 
     keys() {
         let keys = [];
-        for (const linkedList of this.array) {
-            if (!linkedList) continue;
-            const keyArray = linkedList.getKeys();
+        for (const bucket of this.array) {
+            if (!bucket) continue;
+            const keyArray = bucket.getKeys();
             if (keyArray) keys.push(...keyArray);
         }
         return keys;
@@ -114,9 +108,9 @@ class HashMap {
 
     values() {
         let values = [];
-        for (const linkedList of this.array) {
-            if (!linkedList) continue;
-            const valueArray = linkedList.getValues();
+        for (const bucket of this.array) {
+            if (!bucket) continue;
+            const valueArray = bucket.getValues();
             if (valueArray) values.push(...valueArray);
         }
         return values;
@@ -124,17 +118,15 @@ class HashMap {
 
     entries() {
         let entryArray = [];
-        for (const linkedList of this.array) {
-            if (!linkedList) continue;
-            const array = linkedList.getKeyValues();
+        for (const bucket of this.array) {
+            if (!bucket) continue;
+            const array = bucket.getKeyValues();
             if (array) entryArray.push(...array);
         }
 
         return entryArray;
     }
-
 }
-
 
 const test = new HashMap()
 
@@ -151,4 +143,4 @@ test.set('jacket', 'blue')
 test.set('kite', 'pink')
 test.set('lion', 'golden')
 
-console.log(test.entries());
+console.log(test);

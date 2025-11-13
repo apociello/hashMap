@@ -1,4 +1,3 @@
-// Both classes are reused from previous project
 
 class LinkedList {
     constructor() {
@@ -25,12 +24,12 @@ class LinkedList {
         return this.size;
     }
 
-    getValue(value) {
+    getValue(keyToFind) {
         if (this.head == null) return null;
         let current = this.head;
         while(current != null) {
-            const [key, storedValue] = current.value;
-            if(key === value) return storedValue;
+            const {key, value} = current.value;
+            if(key === keyToFind) return value;
             current = current.next;
         }
 
@@ -42,7 +41,7 @@ class LinkedList {
         let current = this.head;
         let keyArray = [];
         while(current != null) {
-            const key = current.value[0];
+            const { key } = current.value;
             keyArray.push(key);
             current = current.next;
         }
@@ -55,7 +54,7 @@ class LinkedList {
         let current = this.head;
         let valueArray = [];
         while(current != null) {
-            const value = current.value[1];
+            const { value } = current.value;
             valueArray.push(value);
             current = current.next;
         }
@@ -68,7 +67,7 @@ class LinkedList {
         let current = this.head;
         let array = [];
         while(current != null) {
-            const [key, value] = current.value;
+            const { key, value } = current.value;
             array.push([key, value ]);
             current = current.next;
         }
@@ -76,25 +75,25 @@ class LinkedList {
         return array;
     }
 
-    contains(value) {
+    contains(keyToFind) {
         if (this.head == null) return false;
         let current = this.head;
         while(current != null) {
-            const key = current.value[0];
-            if(key === value) return true;
+            const {key, value} = current.value;
+            if(key === keyToFind) return true;
             current = current.next;
         }
 
         return false;
     }
 
-    find(value) {
+    find(keyToFind) {
         let index = 0;
         let current = this.head;
 
         while(current != null) {
-            const key = current.value[0];
-            if (key === value) return index;
+            const { key } = current.value;
+            if (key === keyToFind) return index;
             current = current.next;
             index++;
         }
